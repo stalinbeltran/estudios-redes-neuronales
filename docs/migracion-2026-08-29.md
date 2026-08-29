@@ -1,171 +1,108 @@
 # La centralización de los reportes — 2026-08-29
 
-> ## ⚠ ESTADO: A MEDIAS, Y A PROPÓSITO
+> ## ✅ COMPLETADA el 2026-08-29
 >
-> Este repo **existe sólo en local**: el token de GitHub de esta máquina **no tiene permiso para
-> crear repositorios**, así que no hay remoto al que empujar. Mientras eso siga así, **los 21
-> reportes siguen también en sus repos de origen** y hay dos copias de cada uno.
->
-> Sí, eso es exactamente lo que la R19 llama *«una migración a medias son dos sistemas»*. Se acepta
-> a sabiendas porque la alternativa es peor: **estos servidores son efímeros y lo que no está
-> empujado no existe**. Borrar los originales —que sí están empujados— para dejar la única copia en
-> un repo local sin remoto no es migrar, es **borrar 21 reportes**.
->
-> La regla que se respeta por encima de la R19: **nada se saca de un repo empujado para meterlo en
-> uno que no lo está.**
+> Los 21 reportes viven aquí y **en ningún otro sitio**. Los dos repos de origen conservan un
+> puntero y nada más; `foveal-vision` se queda además con el **dato crudo** que produjo
+> (`reportes/2026/08-agosto/datos/*.json`), que es de quien lo produjo y no del reporte.
 
-## Qué se hizo, y qué falta
+Se conserva porque explica **por qué** las cosas están donde están, y porque la siguiente
+centralización —la habrá— puede leerse aquí en vez de volver a razonarla.
 
-| | |
+## Qué se movió, y de dónde
+
+| Origen | Cuántos | Ahora |
+|---|---:|---|
+| `telegram-coordinator/reportes/2026/08-agosto/` | 18 | clasificados en `reportes/<tipo>/2026/08-agosto/` |
+| `foveal-vision/reportes/2026/08-agosto/` | 3 | íd. |
+
+```
+reportes/estudios/         14   el sujeto medido es LA RED
+reportes/infraestructura/   4   el sujeto es LA MÁQUINA o LA CADENA
+reportes/sintesis/          2   no se midió nada: se relee lo ya pagado
+reportes/arquitectura/      1   el sujeto es el SISTEMA de repos y procesos
+```
+
+## Por qué salieron de donde estaban
+
+**`telegram-coordinator` es el transporte**: dispara los estudios, no los produce. Guardar allí sus
+reportes era el incumplimiento de la R7 que el propio
+[análisis de arquitectura](../reportes/arquitectura/2026/08-agosto/2026-08-28-analisis-arquitectura.md)
+señaló.
+
+**Y `foveal-vision` tampoco era la respuesta**, aunque la R7 literal lo pidiera:
+
+1. **R1 pesa más.** En agosto de 2026 `foveal-vision` recibió **2.420** commits y los reportes
+   **29** — 83× — y el 92 % de los suyos los escribe una **máquina** a mitad de una flota, no una
+   persona al terminar un estudio. Son dos relojes y dos autores.
+2. **R7 no sabía colocar 4 de los 21.** El `#1` mide droplets del lanzador con un script de
+   `foveal-vision`; el `#2` se lanza con `vast_instance.py` (lanzador) envuelto en `vast-sweep.sh`
+   (coordinador); el análisis de arquitectura tiene por sujeto los cinco repos y por productor a
+   ninguno. Una regla ambigua para el 19 % de los casos no puede ser el único criterio.
+3. **La mitad del encargo no cabía en ningún repo**: la información descriptiva del proyecto.
+
+⚠ **Lo que esto NO arregla**, y conviene no creérselo: el ciclo de dependencias **de código** entre
+repos sigue **intacto** — esto no tocó un solo `import` ni un solo `ROOT.parent`. Lo que desapareció
+es la arista rara de la **documentación**: hasta ahora el repo que mide dependía documentalmente
+del repo del transporte.
+
+## Lo que se aprovechó, porque mover era el único momento barato
+
+- **El README índice era estado E historial en el mismo fichero** (R8). Partido en
+  [`ESTADO.md`](../ESTADO.md), que **se reescribe**, y [`reportes/README.md`](../reportes/README.md),
+  que **sólo se añade**. Mezclados, la fila de `patience` corregida el 28-ago convivía con su
+  versión vieja en el mismo sitio.
+- **El `#` de cada reporte sólo existía en la tabla del índice** (R9) — y se cita desde otros repos
+  (`foveal-vision/docs/plan-dropout-2026-08-28.md` enlaza al `#14`). Ahora va **dentro** del
+  fichero, en su segunda línea. ⚠ **No se reasigna nunca**: un número reapuntado sigue resolviendo
+  a *un* reporte, sólo que al equivocado.
+- **El `#15` y `stride-validacion` son el MISMO evento** —mismas 9 instancias, mismos 0,0383 $,
+  mismos 37,1 min— escrito desde los dos repos el mismo día. Eran las «dos mitades» que la regla
+  del proyecto teme, y **eran invisibles porque vivían en repos distintos**. Al quedar uno al lado
+  del otro deja de serlo. Se marcan mutuamente y **no se fusionan**: fundir dos textos es perder el
+  encuadre de uno de los dos.
+
+## Lo que se tocó en el mismo día, y por qué no podía esperar
+
+**Las cuatro listas de repos**, que estaban cableadas a cinco:
+
+| Fichero | Qué pasaba si no |
 |---|---|
-| ✅ | Repo `estudios-redes-neuronales` construido en `~/src/estudios-redes-neuronales`, con historia de git propia |
-| ✅ | Los **21** reportes clasificados en `reportes/<tipo>/<año>/<mes>/` |
-| ✅ | Los enlaces internos rotos por el movimiento, reescritos y **verificados uno a uno** |
-| ✅ | El `#` de cada reporte, escrito **dentro** del propio fichero (antes sólo existía en el índice) |
-| ✅ | El README índice partido en `ESTADO.md` (se reescribe) + `reportes/README.md` (sólo se añade) |
-| ✅ | Los dos reportes duplicados del mismo evento (`#15` y `stride-validacion`), marcados el uno desde el otro |
-| ✅ | `telegram-coordinator/scripts/cerrable.mjs` cuenta el repo nuevo — el freno, en el mismo commit |
-| ⏳ | **Crear el remoto en GitHub** ← el bloqueo, y no se puede resolver desde esta máquina |
-| ⏳ | Borrar los originales y dejar un puntero en su lugar |
-| ⏳ | Reapuntar los ~40 enlaces de los otros repos |
-| ⏳ | `workspace.mjs`, `bench-preflight.mjs` y `types/dev.json` |
-| ⏳ | Mover `docs/reglas-de-diseno.md` desde `telegram-coordinator` |
+| `telegram-coordinator/scripts/cerrable.mjs` | **el freno daba falso verde** con la tabla de veredictos sin empujar → permiso para destruir el server (R11) |
+| `telegram-coordinator/scripts/workspace.mjs` | ningún workspace nuevo traía el repo → el revisor ciego en todos ellos |
+| `telegram-coordinator/scripts/bench-preflight.mjs` | `--fix` no lo clonaba en una máquina nueva |
+| `digital-ocean-dropplet-auto-launching/types/dev.json` | **un `dev` recién lanzado nacía sin la tabla de veredictos**. ⚠ Y hace falta `actualizar` en el Lanzador, o el mini sigue leyendo el tipo viejo |
 
-## El bloqueo, con su evidencia
+**Y `.claude/agents/revisor.md`**, que no es un enlace sino **una capacidad**: ese agente tiene
+instrucción de mirar el índice para ver si una petición **repite trabajo ya pagado**. Ahora, si el
+repo central no está clonado, tiene que **decirlo en voz alta y bajar a RESERVAS** (R2). Un barrido
+repetido no falla: cuesta lo mismo que el primero y sale igual de bien, así que nadie se entera.
+
+## Las dos cosas que se decidieron NO hacer
+
+1. **Mover `telegram-coordinator/docs/reglas-de-diseno.md`.** Estaba en el plan y se descartó al
+   comprobar que lo leen por **ruta relativa** un hook que dispara en cada mensaje
+   (`scripts/triage.mjs`) y dos definiciones de agente. El motivo largo, en
+   [`README.md` de este directorio](README.md).
+2. **Aprovechar para partir `foveal-vision/CLAUDE.md`** en estado + bitácora, que también le hace
+   falta (recomendación #5 del análisis). «Ya que estamos» es como nacen las migraciones a medias.
+
+## El bloqueo que hubo, para la próxima vez
+
+El repo **no se pudo crear desde la máquina**: los dos tokens son PAT *fine-grained* y los dos dan
+403 en `createRepository`, por GraphQL y por REST.
 
 ```
-$ gh repo create estudios-redes-neuronales --public
-GraphQL: Resource not accessible by personal access token (createRepository)
-
-$ gh api -X POST /user/repos -f name=estudios-redes-neuronales
-{"message":"Resource not accessible by personal access token","status":"403"}
+gh repo create …   → GraphQL: Resource not accessible by personal access token (createRepository)
+POST /user/repos   → 403 {"message":"Resource not accessible by personal access token"}
 ```
 
-Los **dos** tokens de la máquina (el de `GH_TOKEN` y el de `~/.config/gh/hosts.yml`) son PAT
-*fine-grained* y los dos dan 403, por GraphQL y por REST. Autenticar y leer sí pueden; crear, no.
+Lo creó el usuario a mano. Si hiciera falta poder crearlos desde aquí: el token necesita
+*Repository permissions* → **Administration: Read and write** con alcance *All repositories*
+(<https://github.com/settings/personal-access-tokens>), o un PAT clásico con scope `repo`.
 
-**Se arregla de una de estas tres formas, y cualquiera vale:**
-
-1. **Crearlo a mano** en <https://github.com/new> · nombre `estudios-redes-neuronales` · **público**
-   (como sus hermanos; los droplets clonan con `https://` sin token) · **sin** README, `.gitignore`
-   ni licencia — el repo local ya los trae y un commit inicial ajeno obligaría a un merge.
-2. **Dar permiso al token** en <https://github.com/settings/personal-access-tokens>: el token →
-   *Repository permissions* → **Administration: Read and write**, con el alcance en *All repositories*.
-   Es lo que pide `POST /user/repos` para un PAT fine-grained.
-3. **Un PAT clásico** con el scope `repo`.
-
-## Cómo se termina, una vez exista el remoto
-
-Los tres pasos van **seguidos y el mismo día**. Si no caben seguidos, no se empiezan: es
-literalmente la R19.
-
-### Paso 1 — empujar (después de esto, el trabajo ya existe)
-
-```sh
-cd ~/src/estudios-redes-neuronales
-git remote add origin https://github.com/stalinbeltran/estudios-redes-neuronales.git
-git push -u origin main
-```
-
-⚠ **Hasta aquí no se borra nada.** Éste es el único paso que cambia el mundo: a partir de él hay
-dos copias *empujadas*, que es un estado feo pero seguro. Los siguientes lo limpian.
-
-### Paso 2 — vaciar los orígenes y dejar un puntero
-
-```sh
-cd ~/src/telegram-coordinator
-git rm -r -q reportes/2026
-cat > reportes/README.md <<'FIN'
-# Los reportes se mudaron
-
-Viven en **[`estudios-redes-neuronales`](https://github.com/stalinbeltran/estudios-redes-neuronales)**,
-clasificados por tipo: `reportes/<tipo>/<año>/<mes>/`.
-
-- El índice cronológico, con instancias y coste real: [`reportes/README.md`](https://github.com/stalinbeltran/estudios-redes-neuronales/blob/main/reportes/README.md)
-- En qué quedó cada parámetro: [`ESTADO.md`](https://github.com/stalinbeltran/estudios-redes-neuronales/blob/main/ESTADO.md)
-
-Se movieron el 2026-08-29 porque cambian 83× más despacio que el repo que mide y los escribe otra
-mano; y porque 4 de los 21 no son de ningún repo en concreto. El motivo largo, en el
-[README del repo central](https://github.com/stalinbeltran/estudios-redes-neuronales#1-excepción-a-la-r7--un-artefacto-vive-en-la-pieza-de-quien-lo-produce).
-FIN
-git add reportes/README.md
-
-cd ~/src/foveal-vision
-git rm -r -q reportes/2026/08-agosto/*.md          # ⚠ el .json de datos NO: se queda
-mkdir -p reportes && cat > reportes/README.md <<'FIN'
-# Los reportes se mudaron
-
-Los `.md` viven en **[`estudios-redes-neuronales`](https://github.com/stalinbeltran/estudios-redes-neuronales)**.
-Aquí sólo se queda el **dato crudo** que producen (`2026/08-agosto/datos/*.json`): el reporte se
-lleva la prosa, el dato se queda con quien lo produjo.
-
-El criterio de cada estudio —escrito **antes** de mirar— sigue donde estaba: `docs/plan-*.md`.
-FIN
-git add reportes/README.md
-```
-
-### Paso 3 — las referencias, todas de una vez
-
-**Las cuatro listas de repos**, que hoy están cableadas a cinco y a las que hay que añadir
-`estudios-redes-neuronales`:
-
-| Fichero | Si no se toca |
-|---|---|
-| `telegram-coordinator/scripts/cerrable.mjs:86` | ✅ **ya hecho** el 2026-08-29 |
-| `telegram-coordinator/scripts/workspace.mjs:41` | ningún workspace nuevo trae el repo → nadie puede comprobar si un estudio ya se pagó. ⚠ **No se tocó antes porque `--nuevo` CLONA**: con el remoto inexistente, `git clone` falla y **aborta el montaje entero** |
-| `telegram-coordinator/scripts/bench-preflight.mjs:195` | `--fix` no lo clona en una máquina nueva. ⚠ Mismo motivo para no tocarlo antes: clona, y un repo que no existe dejaría el preflight en fallo permanente — bloqueando el estudio `do-v`, que está pendiente |
-| `digital-ocean-dropplet-auto-launching/types/dev.json` (`"repos"`) | **un `dev` recién lanzado nace sin la tabla de veredictos.** Y después, `actualizar` en el Lanzador, o el mini sigue leyendo el tipo viejo |
-
-**Los enlaces en prosa**, localizados con
-`grep -rn "reportes/" --include='*.md' --include='*.py' --include='*.mjs' ~/src`:
-
-- `telegram-coordinator/CLAUDE.md` — líneas 168, 502-517, 584, 793, 799, 841, 1101
-- `telegram-coordinator/docs/reglas-de-diseno.md` — 27 y 370
-- `telegram-coordinator/.claude/agents/revisor.md` — 19 y 22. ⚠ **No es un enlace, es una
-  capacidad**: ese agente tiene instrucción literal de mirar el índice para ver si una petición
-  **repite trabajo ya pagado**. Sin él debe **decirlo en voz alta**, no callar (R2). Un revisor que
-  no encuentra el índice y se calla aprueba pagar dos veces un barrido
-- `foveal-vision/CLAUDE.md` — 70, 127, 918, 1294, 1376-1377. ⚠ Las 918 y 1376 **no son enlaces: son
-  la regla de dónde va un reporte**. Se reescriben, no se repuntan
-- `foveal-vision/docs/plan-prioridades-2026-08-25.md:7`, `plan-dropout-2026-08-28.md:28,40`,
-  `plan-cierre-2026-08-26.md:6,10`
-- `foveal-vision/scripts/knobs_f.py:31`, `scripts/vigilante_avance.py:559`,
-  `scripts/vigilante_prioridades.py:10` — rutas y mensajes al usuario **dentro de código**
-- `foveal-vision-data/README.md:38,122`
-
-Y **`telegram-coordinator/docs/reglas-de-diseno.md` se mueve a `docs/` de este repo** en este mismo
-paso: gobierna los cinco repos, y el propio documento dice de sí mismo *«el ejemplo es de aquí, la
-regla no»*.
-
-### Paso 4 — comprobar
-
-```sh
-# ningún reporte vive en dos sitios (esto es la R19)
-find ~/src/telegram-coordinator/reportes ~/src/foveal-vision/reportes -name '*.md' | wc -l   # -> 2
-
-# cero rutas viejas vivas
-grep -rn "reportes/2026/" ~/src --include='*.md' --include='*.py' --include='*.mjs' \
-  | grep -v estudios-redes-neuronales | grep -v "/datos/"                                        # -> VACÍO
-
-# el freno cuenta el repo nuevo (el que cuesta dinero si falla)
-touch ~/src/estudios-redes-neuronales/BORRAME.md
-node ~/src/telegram-coordinator/scripts/cerrable.mjs      # -> 🔴 y NOMBRA estudios-redes-neuronales
-rm ~/src/estudios-redes-neuronales/BORRAME.md
-
-# un workspace nuevo trae seis repos
-node ~/src/telegram-coordinator/scripts/workspace.mjs --nuevo prueba-central && ls ~/ws/prueba-central   # -> 6
-```
-
-## Lo que se decidió NO hacer, y por qué
-
-- **Copiar los reportes y dejar los originales como estado final.** Dos mitades desfasadas,
-  garantizado. Lo de hoy es un estado *de tránsito* declarado y con su fecha, no un diseño.
-- **Renumerar el `#` al reclasificar.** El `#` ya se cita desde otros repos; un número reasignado
-  sigue resolviendo a *un* reporte, sólo que al equivocado — y eso es peor que uno que falta.
-- **Fusionar el `#15` con `stride-validacion`**, que son el mismo evento. Fundir dos textos es
-  perder el encuadre de uno de los dos. Se marcan el uno desde el otro y ya no son invisibles.
-- **Submódulos de git para «referenciar los otros repos».** Un submódulo fija *un commit* y
-  `foveal-vision` recibe ~100 commits de máquina al día: el pin nace rancio. Referenciar no es
-  anidar; se hace con la tabla declarada del `README.md`.
-- **Aprovechar para partir `foveal-vision/CLAUDE.md`**, que también le hace falta. «Ya que estamos»
-  es como nacen las migraciones a medias.
+⚠ **Y la regla que salió de ahí, que vale para cualquier migración futura:** mientras el destino no
+tenga remoto, **nada se saca de un repo empujado para meterlo en uno que no lo está**. Estos
+servidores son efímeros; hacerlo no habría sido migrar, habría sido borrar 21 reportes. Durante las
+horas que duró el bloqueo hubo dos copias, declaradas y con banner en los dos sitios — feo, pero
+seguro, y es el estado de tránsito correcto.
