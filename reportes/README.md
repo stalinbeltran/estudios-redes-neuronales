@@ -48,7 +48,7 @@ preguntas:
 | **`estudios`** | **la red** — un eje del espacio de búsqueda, f1, una semilla | *¿qué le pasa a la red al mover este mando?* | 14 |
 | **`infraestructura`** | **la máquina o la cadena** — s/época, $/unidad, una prueba de humo | *¿con qué se mide, cuánto cuesta y funciona el camino?* | 4 |
 | **`sintesis`** | **conocimiento ya pagado**, releído y reordenado. No mide nada nuevo | *¿qué sabemos ya, junto y en orden?* | 2 |
-| **`arquitectura`** | **el sistema** — repos, interfaces, procesos | *¿cómo encajan las piezas y qué habría que cambiar?* | 1 |
+| **`arquitectura`** | **el sistema** — repos, interfaces, procesos | *¿cómo encajan las piezas y qué habría que cambiar?* | 2 |
 
 Dos casos de borde ya resueltos, para no volver a discutirlos:
 
@@ -144,7 +144,7 @@ una corrida por perdida, comprobar que de verdad no queda nada corriendo.
 ## Los que no son barridos, y por eso no tienen fila arriba
 
 La tabla de arriba es **contabilidad**: lleva instancias y coste real, y una fila de «no aplica» la
-ensuciaría. Estos cuatro no alquilaron nada y no costaron nada, así que van aquí — pero se listan,
+ensuciaría. Estos cinco no alquilaron nada y no costaron nada, así que van aquí — pero se listan,
 porque un reporte que no está en ningún índice no existe.
 
 | Reporte | Tipo | Qué es |
@@ -153,3 +153,4 @@ porque un reporte que no está en ningún índice no existe.
 | [2026-08-26-geometria-nueva-primeros-resultados.md](sintesis/2026/08-agosto/2026-08-26-geometria-nueva-primeros-resultados.md) | `sintesis` | Los ocho recorridos del 25–26 de agosto leídos juntos bajo la geometría nueva. No midió nada: relee lo ya pagado |
 | [2026-08-27-stride-validacion.md](infraestructura/2026/08-agosto/2026-08-27-stride-validacion.md) | `infraestructura` | ⚠ **El mismo evento que el `#15`**, escrito desde el otro repo. Se conserva por el detalle del arnés; el canónico es el `#15` |
 | [2026-08-28-analisis-arquitectura.md](arquitectura/2026/08-agosto/2026-08-28-analisis-arquitectura.md) | `arquitectura` | Los cinco repos leídos como un solo sistema. De aquí salen las 19 reglas de diseño |
+| [2026-08-30-sobrevivir-a-rehacer-el-dev.md](arquitectura/2026/08-agosto/2026-08-30-sobrevivir-a-rehacer-el-dev.md) | `arquitectura` | Por qué las dos aplicaciones del 29–30 de agosto —la web app como servicio y el entrenador en Vast— **no funcionaron a la primera**. Inventariado sobre un dev recién nacido: el código llegó entero y el estado casi nada (0 fuentes, 0 pesos, 2 de 18 datasets). ⚠ El modelo `fov-optimo-p20` —69 épocas en Vast— **se perdió** |
