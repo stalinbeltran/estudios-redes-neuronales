@@ -53,11 +53,12 @@ factura)?* y *¿cuál es el sujeto medido?* — `estudios` si es **la red**, `in
 instancias **alquiladas**, coste real, «lo que quedó pendiente») y por qué esos y no otros, en
 [`reportes/README.md`](reportes/README.md).
 
-## 4. ⚠ Aquí se trabaja en `main`, y es una excepción declarada
+## 4. Aquí se trabaja en `main` — también desde un workspace
 
-La convención del proyecto es rama propia por workspace. **Aquí no**: un índice sólo-añadir no
-diverge de verdad, y un veredicto parado en una rama es invisible para la máquina siguiente — el
-fallo que este proyecto ya pagó el 2026-08-14. El motivo entero, en el README.
+La regla general de los seis repos ya es `main`. Lo que este repo añade: **ni siquiera desde un
+workspace paralelo** se usa rama propia. Un índice sólo-añadir no diverge de verdad (conflicta en la
+última línea: ruidoso y barato), y un veredicto parado en una rama es invisible para la máquina
+siguiente — el fallo que este proyecto ya pagó el 2026-08-14. El motivo entero, en el README.
 
 ## 5. Lo que NO está aquí, y dónde está
 

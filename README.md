@@ -80,10 +80,15 @@ Se paga a propósito, por tres motivos medidos:
 desaparece es la arista rara de la documentación: hasta ahora el repo que mide dependía
 documentalmente del repo del **transporte**.
 
-### 2. Excepción a «rama propia por workspace» — aquí se trabaja en `main`
+### 2. Aquí se trabaja en `main` — también desde un workspace
 
-La convención del proyecto es que cada workspace empuje a su rama. **Este repo se clona y se empuja
-en `main` desde todos los workspaces.**
+⚠ **Reformulado el 2026-09-01**: esto se llamaba «excepción a rama propia por workspace», lo que
+daba a entender que la convención del proyecto eran las ramas. No lo es. **La regla general de los
+seis repos es `main`**, porque un server nuevo hace un clon limpio; la rama propia es lo excepcional
+y sólo aplica a **trabajos paralelos en workspaces separados del mismo dev**.
+
+Lo que este repo añade es que **ni siquiera en ese caso** se separa: **se clona y se empuja en
+`main` desde todos los workspaces.**
 
 Motivo: un índice sólo-añadir no diverge de verdad (conflicta en la última línea: ruidoso y barato),
 y **un veredicto parado en una rama es invisible para la máquina siguiente**, que es exactamente el
