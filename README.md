@@ -8,6 +8,7 @@ sistema.
 
 | Si quieres saber… | Mira en |
 |---|---|
+| **las reglas de este repo** (lo que no se puede hacer mal) | [`CLAUDE.md`](CLAUDE.md) |
 | **qué está fijado hoy** y qué sigue abierto | [`ESTADO.md`](ESTADO.md) — se reescribe |
 | **qué se corrió, cuándo, con cuántas máquinas y qué costó** | [`reportes/README.md`](reportes/README.md) — sólo se añade |
 | **qué repo hace qué** | la tabla de aquí abajo |
@@ -43,7 +44,9 @@ frente con la convención de «rama propia por workspace», que apunta a una ram
 | [`digital-ocean-dropplet-auto-launching`](https://github.com/stalinbeltran/digital-ocean-dropplet-auto-launching) | **El lanzador.** Crea y destruye máquinas en DigitalOcean y Vast.ai | `results/`, los tipos de máquina (`types/*.json`) | `DO_TOKEN` y `VAST_AI_API_TOKEN`; y la clave SSH **registrada antes** de crear nada | [`docs/reparto-mini-dev.md`](https://github.com/stalinbeltran/digital-ocean-dropplet-auto-launching/blob/main/docs/reparto-mini-dev.md) |
 | [`image-text-sample-generator`](https://github.com/stalinbeltran/image-text-sample-generator) | **El generador del dato.** Renderiza las imágenes de texto sobre las que se entrena | Los renders (reproducibles byte a byte desde `specs.jsonl`) | Google Chrome de verdad, **no** el Chromium de Playwright | [`CLAUDE.md`](https://github.com/stalinbeltran/image-text-sample-generator/blob/main/CLAUDE.md) |
 
-⚠ **Y este repo es el sexto.** Quien monte un workspace tiene que traérselo: sin él no hay forma de
+⚠ **Y este repo es el sexto**, con su [`CLAUDE.md`](CLAUDE.md) desde el 2026-09-01: una sesión
+abierta aquí no recibía ninguna instrucción, y lo primero que puede hacer mal es **romper el
+charter** escribiendo código o datos. Quien monte un workspace tiene que traérselo: sin él no hay forma de
 comprobar si un estudio que se va a pagar ya se pagó una vez. Está en las listas de
 `telegram-coordinator/scripts/workspace.mjs`, `scripts/cerrable.mjs`, `scripts/bench-preflight.mjs` y
 `digital-ocean-dropplet-auto-launching/types/dev.json`.
