@@ -97,14 +97,14 @@ secretos y el resto configuración con valores por defecto razonables.
 
 | repo | `.env` local | `.env.example` en git | nombres | secretos |
 |---|---|---|---|---|
-| `telegram-coordinator` | sí | **incompleto** (2 de 4) | `BOT_TOKEN` `ALLOWED_USER_IDS` `CLAUDE_PERMISSION_MODE` `COMMAND_TIMEOUT_MS` | `BOT_TOKEN` |
+| `telegram-coordinator` | sí | sí, completo (5 documentadas) | `BOT_TOKEN` `ALLOWED_USER_IDS` `CLAUDE_PERMISSION_MODE` `COMMAND_TIMEOUT_MS` | `BOT_TOKEN` |
 | `claude-code-webapp-mobile` | no (lo genera el lanzador) | sí, **creado el 2026-09-10** | `TS_AUTHKEY` `CWEB_PORT` `CWEB_PUERTO_TS` `CWEB_SONDEO_MS` `CWEB_HOSTNAME` `CWEB_DATA_DIR` `COORD_HOME` | `TS_AUTHKEY` |
-| `foveal-vision` | no | **NO EXISTE** | `WEB_TOKEN` (desde `FVW_WEB_TOKEN`), `FV_API_URL` | `WEB_TOKEN` |
-| `claude-auto-retry` | sí | **incompleto** (1 de 6) | `CR_DETECTION_PRECISION` `CR_FALLBACK_HOURS` `CR_MARGIN_SECONDS` `CR_MAX_RETRIES` `CR_PERMISSION_MODE` `CR_TRANSCRIPT` | ninguno |
+| `foveal-vision` | no (lo genera el lanzador) | sí, **creado el 2026-09-10** | 14 en total; las que importan: `FV_WEB_TOKEN` (desde `FVW_WEB_TOKEN`), `FV_DATA_ROOT`, `FV_WEB_PORT/HOST`, `COORD_HOME` | `FV_WEB_TOKEN` |
+| `claude-auto-retry` | sí | sí, completo (9, comentadas por opcionales) | `CR_DETECTION_PRECISION` `CR_FALLBACK_HOURS` `CR_MARGIN_SECONDS` `CR_MAX_RETRIES` `CR_PERMISSION_MODE` `CR_TRANSCRIPT` | ninguno |
 | `comercial-DB` | sí | sí (+2 de más) | `DB_HOST` `DB_PORT` `DB_NAME` `DB_USER` `DB_PASSWORD` · ejemplo añade `SEED_RANDOM` `SEED_SCALE` | `DB_PASSWORD` |
 | `comercial-desnormalizada` | sí | sí, cuadra | `DB_*` + `DB_DESN_*` (5+5) | 2 contraseñas |
-| `comercial-resumen` | sí | **incompleto** (le faltan los 6 de `DB_RESUMEN_*` y los `_TEST_NAME`) | `DB_*` `DB_DESN_*` `DB_RESUMEN_*` | 3 contraseñas |
-| `comercial-demo` | no | sí, pero con una variable basura llamada `xx` | `DB_*` | `DB_PASSWORD` |
+| `comercial-resumen` | sí | sí, **completado el 2026-09-10** (le faltaban 7) | `DB_*` `DB_DESN_*` `DB_RESUMEN_*` | 3 contraseñas |
+| `comercial-demo` | no | sí, **limpiado el 2026-09-10** | `DB_*` | `DB_PASSWORD` |
 | `dashboard-sagj` | sí | sí, cuadra | `DB_ORIGINAL_URL` `DB_DENORMALIZED_URL` `DB_SUMMARY_URL` `DB_MOCK_URL` `USE_MOCK_DB` `SSH_TUNNEL_ENABLED` `SSH_HOST` `SSH_PORT` `SSH_USER` `SSH_PASSWORD` `SSH_PKEY_PATH` `SSH_PKEY_PASSPHRASE` `SSH_LOCAL_PORT` `SSH_REMOTE_BIND_HOST` `SSH_REMOTE_BIND_PORT` `ETL_*` (4) `SEED_*` (2) | 4 URL con contraseña + 2 SSH |
 | `estudios-redes-neuronales` | — | no aplica | ninguno | — |
 | `experimentos-cnn` (614 fich.) | — | ninguno | ninguno detectado | — |
@@ -112,7 +112,7 @@ secretos y el resto configuración con valores por defecto razonables.
 
 ---
 
-## 4. Los cinco agujeros que encontró el barrido
+## 4. Los cinco agujeros que encontró el barrido — los cinco cerrados
 
 Esto no es una lista de mejoras: es lo que hoy hace que «rehacerlo desde cero» no
 funcione tal cual.
@@ -130,18 +130,43 @@ preguntarle a git si lo ignora, y si no, no escribirlo.
 `.gitignore`, y de paso su `.env.example`, que tampoco tenía. **No hubo fuga**: el fichero
 nunca llegó a existir. No era una filtración ocurrida, era una armada y esperando.
 
-### 4.2 Tres `.env.example` mienten por defecto
+### 4.2 ✅ Un `.env.example` incompleto — CORREGIDO, y el barrido se equivocaba en dos
 
-`claude-auto-retry` (1 de 6), `telegram-coordinator` (2 de 4) y `comercial-resumen` (le
-faltan los seis `DB_RESUMEN_*`). Un ejemplo incompleto es **peor que ninguno**: quien
-rehaga el proyecto cree que ya está y descubre lo que falta cuando algo revienta.
+⚠ **Corrección del propio inventario.** La primera pasada dijo que tres ejemplos estaban
+incompletos y **sólo uno lo estaba**. El error fue del método, no de los repos: se
+contaron las líneas `VAR=` sin comentar, y un `.env.example` bien escrito documenta las
+variables opcionales **comentadas**, que es justo lo correcto.
 
-### 4.3 Falta un `.env.example`: `foveal-vision`
+Recontado el 2026-09-10 mirando también las comentadas:
 
-Eran dos; `claude-code-webapp-mobile` se arregló el 2026-09-10 (§4.1). Queda
-**`foveal-vision`**, cuya web app pide `WEB_TOKEN` (llega como `FVW_WEB_TOKEN`) y
-`FV_API_URL`. Es la regla que pediste — **siempre tiene que haber `.env.example` en git
-para que Claude sepa qué se pide** — y es el único activo que sigue sin cumplirla.
+| repo | veredicto |
+|---|---|
+| `claude-auto-retry` | **estaba bien**: documenta las 9, comentadas porque todas son opcionales |
+| `telegram-coordinator` | **estaba bien**: documenta las 5 |
+| `comercial-resumen` | **sí faltaban 7**, y son las del propio proyecto: `DB_RESUMEN_HOST/PORT/USER/PASSWORD/NAME` y los dos `*_TEST_NAME`. Documentaba las dos bases de ENTRADA y ninguna de SALIDA. **Corregido** (`d624dac`) |
+
+La regla que deja, y que vale para cualquier auditoría de este tipo: **contar lo que un
+fichero declara no es contar sus líneas activas.** Un ejemplo que comenta sus opcionales
+está mejor escrito que uno que las deja sueltas, y el método ingenuo lo castigaba.
+
+### 4.3 ✅ Faltaban dos `.env.example` — LOS DOS CORREGIDOS el 2026-09-10
+
+`claude-code-webapp-mobile` (§4.1) y `foveal-vision`.
+
+⚠ **Y el barrido se quedó corto con `foveal-vision`**: dijo que pedía dos variables
+(`WEB_TOKEN` y `FV_API_URL`) y de verdad pide **catorce**, empezando porque el token se
+llama `FV_WEB_TOKEN` y no `WEB_TOKEN`. Salieron de un `grep os.environ` sobre el repo, no
+de leer el README. Su `.env.example` ya está en git (`3655a04`), con el valor por defecto
+real de cada una y con los dos avisos que las hacen importantes:
+
+- **`FV_WEB_TOKEN`** — el API borra datasets, runs y estudios sin preguntar, así que
+  `fv.api` se niega a arrancar expuesto sin token. Y la URL que imprime `web_app.py url`
+  **lleva el token dentro**: es la llave, no una dirección.
+- **`FV_DATA_ROOT`** — sin valor, `data_root()` cae al propio repo de código, donde
+  `runs/`, `sweeps/` y `studies/` están en `.gitignore`. Un estudio corre entero, escribe
+  sus resultados y no los commitea en ninguna parte, sin un solo error.
+
+Su `.gitignore` **sí** cubría `.env` (línea 151), comprobado con `git check-ignore`.
 
 ### 4.4 El nombre de la key de Tailscale estaba mal en el lanzador
 
@@ -155,9 +180,11 @@ servicio, `services/claude-web.json`, que declara `"env_prefix": "CWEB_"`.
 Deja una regla: **el nombre de una variable puente no lo elige quien la transporta, lo
 declara quien la consume.**
 
-### 4.5 `comercial-demo` tiene una variable llamada `xx`
+### 4.5 ✅ `comercial-demo` tenía una variable llamada `xx` — QUITADA
 
-En su `.env.example`. O sobra, o alguien la necesitaba y nadie sabe para qué.
+No aparecía en una sola línea de código del repo. Una variable de ejemplo que nadie
+consume es peor que ninguna: quien copie el fichero se pregunta qué valor ponerle y no hay
+respuesta. Fuera (`5f3dc71`).
 
 ---
 
@@ -166,7 +193,7 @@ En su `.env.example`. O sobra, o alguien la necesitaba y nadie sabe para qué.
 | sitio | qué tiene | sobrevive a |
 |---|---|---|
 | `c:\Desarrollo\*\.env` (laptop) | **todo**: los 13 secretos y toda la configuración | nada, si se pierde la laptop |
-| `mini:~/.config/dev-secrets.env` | 20 variables de flota (medido 2026-09-10) | que se pierda la laptop |
+| `mini:~/.config/dev-secrets.env` | 22 variables (medido 2026-09-10 tras `push-secret --llavero`) | que se pierda la laptop |
 | `mini:~/src/telegram-coordinator/.env` | 4, derivadas del llavero | ídem |
 | GitHub | **sólo los `.env.example`**, sin un valor | todo |
 
