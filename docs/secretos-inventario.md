@@ -98,7 +98,7 @@ secretos y el resto configuración con valores por defecto razonables.
 | repo | `.env` local | `.env.example` en git | nombres | secretos |
 |---|---|---|---|---|
 | `telegram-coordinator` | sí | **incompleto** (2 de 4) | `BOT_TOKEN` `ALLOWED_USER_IDS` `CLAUDE_PERMISSION_MODE` `COMMAND_TIMEOUT_MS` | `BOT_TOKEN` |
-| `claude-code-webapp-mobile` | no | **NO EXISTE** | `TS_AUTHKEY` `CWEB_PORT` `CWEB_PUERTO_TS` `CWEB_SONDEO_MS` `CWEB_HOSTNAME` `CWEB_DATA_DIR` `COORD_HOME` | `TS_AUTHKEY` |
+| `claude-code-webapp-mobile` | no (lo genera el lanzador) | sí, **creado el 2026-09-10** | `TS_AUTHKEY` `CWEB_PORT` `CWEB_PUERTO_TS` `CWEB_SONDEO_MS` `CWEB_HOSTNAME` `CWEB_DATA_DIR` `COORD_HOME` | `TS_AUTHKEY` |
 | `foveal-vision` | no | **NO EXISTE** | `WEB_TOKEN` (desde `FVW_WEB_TOKEN`), `FV_API_URL` | `WEB_TOKEN` |
 | `claude-auto-retry` | sí | **incompleto** (1 de 6) | `CR_DETECTION_PRECISION` `CR_FALLBACK_HOURS` `CR_MARGIN_SECONDS` `CR_MAX_RETRIES` `CR_PERMISSION_MODE` `CR_TRANSCRIPT` | ninguno |
 | `comercial-DB` | sí | sí (+2 de más) | `DB_HOST` `DB_PORT` `DB_NAME` `DB_USER` `DB_PASSWORD` · ejemplo añade `SEED_RANDOM` `SEED_SCALE` | `DB_PASSWORD` |
@@ -117,15 +117,18 @@ secretos y el resto configuración con valores por defecto razonables.
 Esto no es una lista de mejoras: es lo que hoy hace que «rehacerlo desde cero» no
 funcione tal cual.
 
-### 4.1 ⚠ `claude-code-webapp-mobile` no ignora `.env`
+### 4.1 ✅ `claude-code-webapp-mobile` no ignoraba `.env` — CORREGIDO el 2026-09-10
 
 Su `.gitignore` **entero** es una línea: `node_modules/`. La app lee `TS_AUTHKEY` de un
 `.env`, o sea que **el día que alguien cree ese fichero, git lo va a rastrear**, y el repo
 es **público**.
 
 Es literalmente el caso que la regla nueva evita: antes de escribir un `.env` hay que
-preguntarle a git si lo ignora, y si no, no escribirlo. **Arreglo inmediato: añadir `.env`
-y `.env.*` al `.gitignore` de ese repo**, antes de que exista el fichero.
+preguntarle a git si lo ignora, y si no, no escribirlo.
+
+**Arreglado el 2026-09-10** (commit `a322da5` de ese repo): `.env` y `.env.*` al
+`.gitignore`, y de paso su `.env.example`, que tampoco tenía. **No hubo fuga**: el fichero
+nunca llegó a existir. No era una filtración ocurrida, era una armada y esperando.
 
 ### 4.2 Tres `.env.example` mienten por defecto
 
@@ -133,11 +136,12 @@ y `.env.*` al `.gitignore` de ese repo**, antes de que exista el fichero.
 faltan los seis `DB_RESUMEN_*`). Un ejemplo incompleto es **peor que ninguno**: quien
 rehaga el proyecto cree que ya está y descubre lo que falta cuando algo revienta.
 
-### 4.3 Dos proyectos activos no tienen `.env.example`
+### 4.3 Falta un `.env.example`: `foveal-vision`
 
-`claude-code-webapp-mobile` y `foveal-vision`. Es justo la regla que pediste — **siempre
-tiene que haber `.env.example` en git para que Claude sepa qué se pide** — y ahora mismo
-no se cumple en los dos proyectos más nuevos.
+Eran dos; `claude-code-webapp-mobile` se arregló el 2026-09-10 (§4.1). Queda
+**`foveal-vision`**, cuya web app pide `WEB_TOKEN` (llega como `FVW_WEB_TOKEN`) y
+`FV_API_URL`. Es la regla que pediste — **siempre tiene que haber `.env.example` en git
+para que Claude sepa qué se pide** — y es el único activo que sigue sin cumplirla.
 
 ### 4.4 El nombre de la key de Tailscale estaba mal en el lanzador
 
@@ -145,7 +149,8 @@ Se puso como `TAILSCALE_AUTHKEY` y el nombre que de verdad funciona es
 **`CWEB_TS_AUTHKEY`**, porque el puente de `env_prefix` es lo que la convierte en
 `TS_AUTHKEY` dentro del `.env` del servicio. Lo fija el propio repo de la app
 (`docs/decisiones.md`, P3). **Corregido el 2026-09-10** en el `.env` de la laptop, en el
-`.env.example` y en el llavero del `mini`.
+`.env.example` y en el llavero del `mini`. Confirmado por el propio descriptor del
+servicio, `services/claude-web.json`, que declara `"env_prefix": "CWEB_"`.
 
 Deja una regla: **el nombre de una variable puente no lo elige quien la transporta, lo
 declara quien la consume.**
