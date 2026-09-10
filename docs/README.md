@@ -19,8 +19,21 @@ documento pertenece aquí es una pregunta, y tiene que salir «sí» a las dos:
 
 ## Qué hay hoy
 
-Nada todavía. El directorio existe con esta guía porque un sitio sin criterio de admisión se llena
-de lo que no cabía en otro sitio, que es justo lo que el charter del repo intenta evitar.
+| Documento | Qué es | Por qué pasa las dos preguntas |
+|---|---|---|
+| [`secretos-inventario.md`](secretos-inventario.md) | **todas** las variables de **todos** los `.env` de **todos** los proyectos, separando los 13 secretos de verdad de la configuración | gobierna los 62 repos, no cinco; y una tabla de qué token usa quién sigue siendo cierta aunque se reescriba cualquier repo |
+| [`secretos-desde-cero.md`](secretos-desde-cero.md) | el manual para **volver a conseguirlos todos** si se pierden. Diez pasos, en orden, cada uno con su comprobación | el procedimiento para reemitir un token de DigitalOcean no depende de ningún repo nuestro |
+
+⚠ **Los dos extienden el charter a propósito, y se declara aquí en vez de romperlo en
+silencio.** Hasta el 2026-09-10 este repo gobernaba **los seis del sistema de redes
+neuronales**; esos dos gobiernan **todos los proyectos**, incluidos los que no tienen nada
+que ver con redes (`comercial-*`, `dashboard-sagj`, `claude-code-webapp-mobile`). Es una
+decisión del dueño, del 2026-09-10: *«debo mantener control central sobre todos mis
+proyectos, no sólo éste»*.
+
+El charter en lo demás **sigue intacto**: son prosa y tablas, sin una línea de código, sin un
+`.json` y **sin un solo valor de ningún secreto**. Un inventario con valores sería una
+filtración con índice.
 
 ## Un candidato que se MIRÓ y se dejó donde estaba
 
