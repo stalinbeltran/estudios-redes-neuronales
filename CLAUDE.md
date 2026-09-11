@@ -34,6 +34,7 @@ aquí.
 |---|---|
 | [`ESTADO.md`](ESTADO.md) | *qué es verdad hoy*. **Se REESCRIBE.** Una fila por parámetro, con su veredicto y su reporte |
 | [`reportes/README.md`](reportes/README.md) | *qué pasó*. **SÓLO SE AÑADE**, en orden cronológico. Reescribir una fila vieja es perder el histórico que lo hace útil |
+| [`bitacora/`](bitacora/) | *qué se pidió y qué se fue descubriendo*. **SÓLO SE AÑADE**, y se escribe EN EL MOMENTO. Un fichero por mes |
 
 Mezclarlos obliga a leerlo todo y ordenar por fecha para saber el presente — que es exactamente de
 lo que se salió al crear este repo.

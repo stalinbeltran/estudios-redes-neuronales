@@ -11,6 +11,7 @@ sistema.
 | **las reglas de este repo** (lo que no se puede hacer mal) | [`CLAUDE.md`](CLAUDE.md) |
 | **qué está fijado hoy** y qué sigue abierto | [`ESTADO.md`](ESTADO.md) — se reescribe |
 | **qué se corrió, cuándo, con cuántas máquinas y qué costó** | [`reportes/README.md`](reportes/README.md) — sólo se añade |
+| **qué se pidió y qué se descubrió, día a día** | [`bitacora/`](bitacora/) — sólo se añade |
 | **qué repo hace qué** | la tabla de aquí abajo |
 | **cómo se diseña aquí** | [`docs/`](docs/) |
 
