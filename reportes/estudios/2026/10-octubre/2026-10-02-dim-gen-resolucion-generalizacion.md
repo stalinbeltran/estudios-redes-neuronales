@@ -9,12 +9,12 @@
 | **Coste real** | **1,2023 $** *(del libro: 1,1883 $ las que trabajaron + 0,0140 $ los tres intentos fallidos)* |
 | **Runs** | **30**: `W ∈ {128, 64, 32, 16, 8}` × semillas 1–5, más el control `w128-de16` × 5. 4000 pasos de lote 20, Adam `lr` 1e-3, L1, sin selección (`last.pt`) |
 | **Dataset** | `parrafos1000-584px-r4-r20260908b` (publicado en el repo de datos), recortado a 128 px y reducido a `W` por suma exacta de bloques; **train 100 / val 900** |
-| **Artefactos** | código, criterio, métricas, informe y libro: [`experimentos-cnn/2026-10-01-dimension-generalizacion/`](https://github.com/stalinbeltran/experimentos-cnn/tree/tema-2/2026-10-01-dimension-generalizacion) *(rama `tema-2` hasta fusionar)*; **los 30 pesos** y los logs, en el almacén: `foveal-vision-data/experimentos-cnn-resultados/dim-gen/` (rama `tema-2`) |
-| **Criterio** | escrito **antes** de entrenar y commiteado el día anterior (`d43cfa4`), con dos enmiendas fechadas antes de la primera corrida (4000 pasos en vez de 1000; el control en máquina propia): [`instrucciones/02-criterio.md`](https://github.com/stalinbeltran/experimentos-cnn/blob/tema-2/2026-10-01-dimension-generalizacion/instrucciones/02-criterio.md) |
+| **Artefactos** | código, criterio, métricas, informe y libro: [`experimentos-cnn/2026-10-01-dimension-generalizacion/`](https://github.com/stalinbeltran/experimentos-cnn/tree/main/2026-10-01-dimension-generalizacion); **los 30 pesos** y los logs, en el almacén: `foveal-vision-data/experimentos-cnn-resultados/dim-gen/` |
+| **Criterio** | escrito **antes** de entrenar y commiteado el día anterior (`d43cfa4`), con dos enmiendas fechadas antes de la primera corrida (4000 pasos en vez de 1000; el control en máquina propia): [`instrucciones/02-criterio.md`](https://github.com/stalinbeltran/experimentos-cnn/blob/main/2026-10-01-dimension-generalizacion/instrucciones/02-criterio.md) |
 
 > Este reporte **resume y enlaza**. El veredicto entero, la tabla por semilla, el desglose por
 > factor y las limitaciones viven en el
-> [README del experimento](https://github.com/stalinbeltran/experimentos-cnn/blob/tema-2/2026-10-01-dimension-generalizacion/README.md).
+> [README del experimento](https://github.com/stalinbeltran/experimentos-cnn/blob/main/2026-10-01-dimension-generalizacion/README.md).
 
 ---
 
@@ -79,8 +79,9 @@ misma red, sí entrenaron.
   veredicto; cambia cuánto de la caída de 128 px es optimizador. **No está hecho.**
 - **El techo es 128 px** (el dato publicado ya es /4 del render): `W > 128` pediría publicar
   otro dato.
-- **Fusionar `tema-2` en `main`** en los tres repos: hasta entonces, un server nuevo no ve nada
-  de esto.
+- ✅ **Fusionar `tema-2` en `main`** en los tres repos — **hecho el 2026-10-02** por orden
+  del dueño: `experimentos-cnn` (`8c03c04`) y este repo (`9ffee3d`) por avance rápido,
+  `foveal-vision-data` con merge (`ac742d81`). Los enlaces de arriba apuntan ya a `main`.
 - Lo estimado contra lo real: el plan decía «≈2 h y 0,4–0,55 $ sin control»; con el control
   y dos reintentos fueron 4,6 h y 1,20 $. El coste por máquina que trabajó fue de 0,055 a
   0,20 $; las de 12 vCPU tardaron hasta el doble que las de 14–18 en el mismo brazo.
