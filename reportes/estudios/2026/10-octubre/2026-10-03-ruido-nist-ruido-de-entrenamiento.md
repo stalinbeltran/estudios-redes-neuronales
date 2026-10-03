@@ -2,10 +2,10 @@
 
 | | |
 |---|---|
-| **Inicio / fin (UTC)** | fase 1: 2026-10-03 00:59 → 01:18 · fase 2: 2026-10-03 03:56 → 04:29 (dos unidades de systemd en el dev, `Result=success`, `NRestarts=0`, 0 fallos) |
+| **Inicio / fin (UTC)** | fase 1: 2026-10-03 00:59 → 01:18 · fase 2: 03:56 → 04:29 · fase 3: 05:17 → 05:28 (tres unidades de systemd en el dev, `Result=success`, `NRestarts=0`, 0 fallos) |
 | **Instancias alquiladas** | **0** — droplet dev |
 | **Coste real** | **0 $** |
-| **Runs** | **117**: fase 1 = `limpio` + 9 tipos a su nivel medio + una 2ª copia de `oblicua`, × 3 semillas (33); fase 2 = los 5 niveles de los 7 tipos que pasaron × 3 (84 nuevas) |
+| **Runs** | **132**: fase 1 = `limpio` + 9 tipos a su nivel medio + una 2ª copia de `oblicua`, × 3 semillas (33); fase 2 = los 5 niveles de los 7 tipos que pasaron × 3 (84 nuevas); fase 3 = el mejor nivel de los 5 tipos que ayudaron, con ruido **en línea** (una copia nueva por época), × 3 (15) |
 | **Dataset** | `uci-optdigits-8px-r20261002` (dígitos 8×8 de UCI/NIST vía scikit-learn, el de `dim-nist`), train 180 (+180 copias) / val 1617 limpias |
 | **Red** | 3 × Conv(3×3, C = 8) sin padding + GAP + Linear(8→10), 1.338 parámetros; Adam `lr = 3e-3`, 3996 pasos de lote 20, `last.pt` |
 | **Artefactos** | [`experimentos-cnn/2026-10-02-ruido-nist/`](https://github.com/stalinbeltran/experimentos-cnn/tree/main/2026-10-02-ruido-nist) (README, `resultados/RESULTADOS.md`, figuras); pesos en el almacén `foveal-vision-data/experimentos-cnn-resultados/ruido-nist/` |
@@ -38,12 +38,21 @@ general es «más ruido, mejor» dentro del rango probado**, con `gaussiano` com
 sobredosis. Y un hallazgo que el criterio no pedía: casi todos los ruidos **bajan la entropía
 cruzada de val** sin mover la exactitud — la red acierta igual y se equivoca con menos seguridad.
 
+**Fase 3 — en línea contra copia fija (pareado).** Los cinco siguen ayudando contra `limpio`, y
+**ninguno empeora** respecto de su copia fija. Dos la superan: **`gaussiano@0.2-linea`, el mejor
+resultado del estudio, 0,912 (+0,042 sobre `limpio`, +0,025 ± 0,006 sobre su fija, umbral
+0,011)**, y `vertical@1-linea` (+0,011 ± 0,005 sobre su fija, umbral 0,010). `recorte`, `curva` y
+`oblicua` quedan indistinguibles de la suya (+0,000, +0,002, +0,007). La CE de val baja otros
+0,16–0,39 nats en los cinco. ⚠ Contra lo escrito antes: se esperaba que la variedad sumara en
+`recorte` y `curva`; sumó en `gaussiano` y `vertical`. Una copia fija de un cutout ya da lo que
+da; el gaussiano cambia entero cada época, y eso es lo que la red aprovecha.
+
 **Lo que no se pudo leer:** el mecanismo. La exactitud de train es 1,000 y su CE ≈ 0,001 en los 38
 escenarios; ningún ruido de esta lista deja huella en el ajuste del train limpio.
 
 ## Cautelas, escritas con los números
 
-- Efectos de **1–3 puntos con 3 semillas**, y **38 comparaciones a 2·SE sin corrección** (el
+- Efectos de **1–4 puntos con 3 semillas**, y **43 comparaciones a 2·SE sin corrección** (el
   criterio no la fijó): cabría esperar 1–2 «ayuda» por azar. `vertical@1` y `oblicua@1` entran
   porque su SE es diminuto y el umbral cae a δ = 0,01. Los que no dependen de eso son
   `recorte@0.6`, `curva@0.8` y `gaussiano@0.2` (Δ ≥ 0,017, 1,5–2× su umbral).
@@ -56,8 +65,8 @@ escenarios; ningún ruido de esta lista deja huella en el ajuste del train limpi
 
 ## Lo que quedó pendiente
 
-- **Ruido en línea** (una realización nueva por época), pedido por el dueño como «después»: con lo
-  medido es lo natural para `recorte`, `curva` y `gaussiano`. No decidido.
+- **Combinar** gaussiano en línea con recorte, que con lo medido es la continuación natural. No
+  decidido.
 - **Grosor / número de trazos** para `vertical` y `oblicua`, que es el eje que α = 1 deja abierto.
 - **No mueve `ESTADO.md`** (otra red, otro dato). Los avisos a Telegram de los cierres no salieron
   (las unidades se lanzaron desde una sesión de Claude Code, sin `BOT_TOKEN`); el `|| true` evitó
