@@ -17,3 +17,9 @@ lectura, en el README del experimento.
 
 **Pendiente:** si el hueco es de transferencia sintético → manuscrito (lo más probable) no está medido; 1 semilla de
 detectores; la opción de mapa 32×32, sin correr.
+
+## Añadido el mismo día: 13 contra 13
+
+Con sólo los 13 detectores del banco fino a 8×8 (corrida 14 de `feat-ind`, 0 $, mismo test de 717), **8×8 gana en
+todos los N**: 0,831 / 0,964 / 0,985 con N = 36 / 180 / 1080, contra 0,792 / 0,942 / 0,974 a 32×32; y con B,
+desplazado 0,774 contra 0,733. Tabla en el README de `feat-ind32`.
