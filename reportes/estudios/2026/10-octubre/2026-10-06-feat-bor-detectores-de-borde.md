@@ -20,4 +20,5 @@ encenderse en los 1 (76 %/70 % → 2 %/8 %). H1 ✅ · H2 ❌ · H3 ✅ (signo) 
 entrenamiento; la primera medida está en `feat-fallos` (finas sí, gruesas no); (2) bordes entrenados con trazos gruesos, que
 sólo hace falta si `feat-fallos` S2 (líneas entrenadas con 2–12 px) no basta; (3) una sola semilla, y con 4 canales la
 inicialización cambia: el efecto de la representación no se separa del de la inicialización. La estimación era 20–30 min y
-0,02–0,05 $: 26 procesos en 28 vCPU fueron unas 4 veces más lentos por núcleo que el dev.
+0,02–0,05 $: cada proceso (1 hilo) tardó 46–50 s por época, contra 8,7–10 s de uno de 2 hilos en el dev (~5 veces más lento
+por proceso, ~2,5 por hilo).
