@@ -16,5 +16,8 @@ es el largo —como trazos, las cortas ganan a las largas, 0,880 contra 0,843—
 las esquinas, que un compositor lineal no puede construir juntando trozos; con ellos prestados, 0,945 (≈ 0,949). Juntas con
 las largas, **0,9606**, la combinación más alta medida en ese momento (H3 pedía 0,966: ❌ por 0,006).
 
-**Lo que quedó pendiente:** las cortas en las dos vistas y junto a todo lo demás (la S6 de `feat-fallos`, #35); cortas
-entrenadas con trazo grueso (una recta de 8 px enciende curvas cortas); una sola semilla.
+**Después, en `feat-fallos` (#35):** las cortas en las dos vistas y junto a las largas (S6a) leen 0,968, y con los gruesos
+(S6b) 0,972; a ciegas, en 3823 dígitos de otros escritores, son **lo que mejor aguanta el cambio de escritor** (sin ellas, de
+0,971 a 0,958; con ellas, de 0,972 a 0,966).
+
+**Lo que quedó pendiente:** cortas entrenadas con trazo grueso (una recta de 8 px enciende curvas cortas); una sola semilla.
